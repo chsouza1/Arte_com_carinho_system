@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel • Arte Com Carinho</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-pink-50 min-h-screen">
+  <header class="bg-white shadow-md p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-pink-600">Arte Com Carinho</h1>
+    <button onclick="logout()" class="text-sm text-white bg-pink-500 px-4 py-1 rounded-lg hover:bg-pink-600">Sair</button>
+  </header>
+
+  <main class="p-6">
+    <h2 class="text-lg font-semibold text-gray-700 mb-4">Painel de Administração</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <a href="produtos.html" class="block bg-white border rounded-xl p-6 shadow hover:shadow-lg transition">
+        <h3 class="text-pink-600 text-xl font-semibold">🧺 Estoque</h3>
+        <p class="text-sm text-gray-600 mt-2">Cadastrar e gerenciar produtos</p>
+      </a>
+      
+      <a href="vendas.html" class="block bg-white border rounded-xl p-6 shadow hover:shadow-lg transition">
+        <h3 class="text-pink-600 text-xl font-semibold">💰 Vendas</h3>
+        <p class="text-sm text-gray-600 mt-2">Registrar e acompanhar vendas</p>
+      </a>
+    </div>
+  </main>
+
+  <script type="module">
+    import { auth } from './js/firebase.js';
+    import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    function logout() {
+      signOut(auth).then(() => {
+        window.location.href = "index.html";
+      });
+    }
+
+    window.logout = logout;
+
+    // Bloqueia acesso se não estiver logado
+    onAuthStateChanged(auth, user => {
+      if (!user) window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

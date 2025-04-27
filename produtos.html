@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produtos • Arte Com Carinho</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
+</head>
+<body class="bg-pink-50 min-h-screen">
+  <header class="bg-white shadow-md p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-pink-600">Produtos</h1>
+    <a href="dashboard.html" class="text-sm text-pink-500">← Voltar</a>
+  </header>
+
+  <main class="p-6">
+    <h2 class="text-lg font-semibold text-gray-700 mb-4">Cadastrar Novo Produto</h2>
+
+    <div class="bg-white p-4 rounded-xl shadow-md space-y-4">
+      <input id="nome" type="text" placeholder="Nome do produto" class="w-full border px-4 py-2 rounded-xl">
+      <input id="preco" type="number" placeholder="Preço (R$)" class="w-full border px-4 py-2 rounded-xl">
+      <input id="quantidade" type="number" placeholder="Quantidade em estoque" class="w-full border px-4 py-2 rounded-xl">
+      <input id="imagem" type="file" class="w-full border px-4 py-2 rounded-xl">
+
+      <button onclick="cadastrarProduto()" class="bg-pink-500 text-white px-6 py-2 rounded-xl hover:bg-pink-600">Cadastrar</button>
+    </div>
+
+    <h2 class="text-lg font-semibold text-gray-700 mt-8 mb-4">Produtos Cadastrados</h2>
+    <div id="lista-produtos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+  </main>
+
+  <script type="module" src="./js/produtos.js">
+    window.cadastrarProduto = cadastrarProduto;
+  </script>
+</body>
+</html>
