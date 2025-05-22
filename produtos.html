@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Produtos • Arte Com Carinho</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
 </head>
 <body class="bg-pink-50 min-h-screen">
   <header class="bg-white shadow-md p-4 flex justify-between items-center">
@@ -22,15 +21,36 @@
       <input id="quantidade" type="number" placeholder="Quantidade em estoque" class="w-full border px-4 py-2 rounded-xl">
       <input id="imagem" type="file" class="w-full border px-4 py-2 rounded-xl">
 
-      <button onclick="cadastrarProduto()" class="bg-pink-500 text-white px-6 py-2 rounded-xl hover:bg-pink-600">Cadastrar</button>
+      <button id="btnCadastrar" class="bg-pink-500 text-white px-6 py-2 rounded-xl hover:bg-pink-600">Cadastrar</button>
     </div>
 
     <h2 class="text-lg font-semibold text-gray-700 mt-8 mb-4">Produtos Cadastrados</h2>
     <div id="lista-produtos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
   </main>
 
-  <script type="module" src="./js/produtos.js">
-    window.cadastrarProduto = cadastrarProduto;
+  <script type="module">
+    
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    import { cadastrarProduto, carregarProdutos } from './js/produtos.js'
+
+    const supabase = createClient(
+      'https://zjjvzouaalphxenypomp.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpqanZ6b3VhYWxwaHhlbnlwb21wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1NDU0MzMsImV4cCI6MjA2MTEyMTQzM30.V846ghEfXW7D1DegBovnzW7i8T27gdzmygWXOiS7SxQ'
+    );
+
+    // Verifica se usuário está logado
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = 'index.html';
+    }
+
+    // Event listener para o botão
+    document.getElementById('btnCadastrar').addEventListener('click', () => {
+      cadastrarProduto(supabase);
+    });
+
+    // Carrega produtos ao iniciar
+    carregarProdutos(supabase);
   </script>
 </body>
 </html>

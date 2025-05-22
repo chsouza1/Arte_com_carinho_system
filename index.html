@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Arte Com Carinho • Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/appwrite@latest"></script>
 </head>
 <body class="bg-pink-50 flex items-center justify-center h-screen">
   <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-sm text-center">
@@ -20,21 +19,18 @@
     <p id="mensagem" class="mt-4 text-sm text-red-500"></p>
   </div>
 
-  <script type="module" src="./login.js"></script>
-  <script>
-    document.getElementById('loginButton').addEventListener('click', async (e) => {
+  <script type="module">
+    import { login } from './login.js';
+
+    document.getElementById('loginButton').addEventListener('click', async () => {
       const email = document.getElementById('email').value;
       const senha = document.getElementById('senha').value;
       const mensagem = document.getElementById('mensagem');
-      
+
       try {
-        // Chame a função login com os dados inseridos
         await login(email, senha);
-        
-        // Caso o login seja bem-sucedido, redirecione para outra página ou exiba sucesso
-        window.location.href = 'dashboard.html'; // Exemplo de redirecionamento
+        window.location.href = 'dashboard.html';
       } catch (error) {
-        // Caso ocorra erro no login, exibe mensagem de erro
         mensagem.textContent = 'Erro ao fazer login, verifique suas credenciais.';
       }
     });

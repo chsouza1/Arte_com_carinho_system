@@ -1,51 +1,61 @@
-import { databases, storage } from "./auth.js";
+// produtos.js
+import { supabase } from '../login.js';      // supabase já criado em auth.js
 
+// bucket e tabela que você criou no painel
+const BUCKET   = 'produtos';              // nome do bucket no Storage
+const TABELA   = 'produtos';              // nome da tabela no DB
+
+// ✔️ única função pública (fica no escopo global p/ onclick)
 window.cadastrarProduto = async () => {
-  const nome = document.getElementById('nome').value
-  const preco = parseFloat(document.getElementById('preco').value)
-  const quantidade = parseInt(document.getElementById('quantidade').value)
-  const imageFile = document.getElementById('imagem').files[0]
+  // 1. pega os campos
+  const nome        = document.getElementById('nome').value.trim();
+  const preco       = parseFloat(document.getElementById('preco').value);
+  const quantidade  = parseInt(document.getElementById('quantidade').value);
+  const imageFile   = document.getElementById('imagem').files[0];
 
   if (!nome || !preco || !quantidade || !imageFile) {
-    alert('Preencha todos os campos')
-    return
+    alert('Preencha todos os campos.');
+    return;
   }
-try {
-  const fileUpload = await storage.createFile(
-    '680d428a002fb94167bb',
-    'Appwrite.ID.unique()',
-    imageFile
-  )
 
-  console.log('Arquivo Enviado:',fileUpload);
+  try {
+    /* 2. upload da imagem -------------------------------------------------- */
+    // cria um nome único p/ o arquivo
+    const filePath = `${Date.now()}_${imageFile.name}`;
+    const { error: upError } = await supabase
+      .storage
+      .from(BUCKET)
+      .upload(filePath, imageFile, { cacheControl: '3600', upsert: false });
 
-  const imagemUrl = 'https://fra.cloud.appwrite.io/v1/storage/buckets/680d428a002fb94167bb/files/$%7BfileUpload.$id%7D/view?project=680d3f8f00318a5de7b9'
+    if (upError) throw upError;
 
-  await databases.createDocument(
-    '680d408b003c20e52411',
-    '680d4213001f5a9f346e',
-    Appwrite.ID.unique(),
-    {
-      nome: nome,
-      preco: preco,
-      quantidade: quantidade,
-      imagem_url: imagemUrl
-    }
-  );
+    // URL pública da imagem
+    const { data: { publicUrl } } = supabase
+      .storage
+      .from(BUCKET)
+      .getPublicUrl(filePath);
 
-    alert('Produto Cadastrado com Sucesso! ');
+    /* 3. grava o produto no banco ----------------------------------------- */
+    const { error: dbError } = await supabase
+      .from(TABELA)
+      .insert([
+        { nome, preco, quantidade, imagem_url: publicUrl }
+      ]);
+
+    if (dbError) throw dbError;
+
+    alert('Produto cadastrado com sucesso! 🎉');
     limparCampos();
-  } catch (error) {
-    console.error('Erro ao cadastrar o produto:',error);
-    alert('Erro ao Cadastrar Produto. Veja o console.');
+  } catch (err) {
+    console.error('Erro ao cadastrar produto:', err);
+    alert('Erro ao cadastrar produto. Veja o console.');
   }
-}
+};
 
+/* ----------------------------------------------------------------------- */
 function limparCampos() {
-  document.getElementById('nome').value = '';
-  document.getElementById('preco').value = '';
+  document.getElementById('nome').value       = '';
+  document.getElementById('preco').value      = '';
   document.getElementById('quantidade').value = '';
-  document.getElementById('imagem').value = '';
+  document.getElementById('imagem').value     = '';
 }
-
-window.cadastrarProduto = cadastrarProduto;

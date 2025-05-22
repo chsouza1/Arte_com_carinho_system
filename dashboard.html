@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel • Arte Com Carinho</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body class="bg-pink-50 min-h-screen">
   <header class="bg-white shadow-md p-4 flex justify-between items-center">
@@ -29,21 +30,25 @@
   </main>
 
   <script type="module">
-    import { auth } from './js/firebase.js';
-    import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    function logout() {
-      signOut(auth).then(() => {
-        window.location.href = "index.html";
-      });
+    const supabaseUrl = 'https://zjjvzouaalphxenypomp.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpqanZ6b3VhYWxwaHhlbnlwb21wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1NDU0MzMsImV4cCI6MjA2MTEyMTQzM30.V846ghEfXW7D1DegBovnzW7i8T27gdzmygWXOiS7SxQ'; // Substitua pela sua chave pública (anon key)
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Verifica se o usuário está logado
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      window.location.href = 'index.html'; // redireciona se não estiver logado
     }
-//test
-    window.logout = logout;
 
-    // Bloqueia acesso se não estiver logado
-    onAuthStateChanged(auth, user => {
-      if (!user) window.location.href = "index.html";
-    });
+    // Logout
+    async function logout() {
+      await supabase.auth.signOut();
+      window.location.href = 'index.html';
+    }
+
+    window.logout = logout;
   </script>
 </body>
 </html>
