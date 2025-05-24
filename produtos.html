@@ -3,54 +3,184 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Produtos • Arte Com Carinho</title>
+  <title>Cadastro Estoque • Arte Com Carinho</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Foco nos inputs com anel da cor do tema */
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="file"]:focus-within { /* Para o wrapper do file input */
+      border-color: #ec4899; /* pink-500 */
+      box-shadow: 0 0 0 2px #fbcfe8; /* pink-200 com opacidade */
+    }
+  </style>
 </head>
-<body class="bg-pink-50 min-h-screen">
-  <header class="bg-white shadow-md p-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold text-pink-600">Produtos</h1>
-    <a href="dashboard.html" class="text-sm text-pink-500">← Voltar</a>
+<body class="bg-pink-100 min-h-screen antialiased text-gray-800">
+  <header class="bg-white shadow-md">
+    <div class="max-w-6xl mx-auto p-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-pink-600">Produtos</h1>
+      <a href="dashboard.html" class="text-sm text-pink-500 hover:text-pink-700 font-medium transition-colors flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+        </svg>
+        Voltar para o menu principal
+      </a>
+    </div>
   </header>
 
-  <main class="p-6">
-    <h2 class="text-lg font-semibold text-gray-700 mb-4">Cadastrar Novo Produto</h2>
+  <main class="py-8 px-4 max-w-3xl mx-auto">
+    <section id="cadastro-produto-section" class="mb-12">
+      <div class="bg-white p-6 sm:p-8 rounded-xl shadow-xl">
+        <h2 class="text-3xl font-semibold text-pink-700 mb-2 text-center">Adicionar Novo Produto</h2>
+        <p class="text-center text-gray-500 mb-6">Preencha os detalhes do seu novo produto no estoque.</p>
+        
+        <div id="feedback-message" class="mb-6 p-3 rounded-lg text-sm hidden transition-all duration-300"></div>
 
-    <div class="bg-white p-4 rounded-xl shadow-md space-y-4">
-      <input id="nome" type="text" placeholder="Nome do produto" class="w-full border px-4 py-2 rounded-xl">
-      <input id="preco" type="number" placeholder="Preço (R$)" class="w-full border px-4 py-2 rounded-xl">
-      <input id="quantidade" type="number" placeholder="Quantidade em estoque" class="w-full border px-4 py-2 rounded-xl">
-      <input id="imagem" type="file" class="w-full border px-4 py-2 rounded-xl">
+        <form id="form-cadastro-produto" class="space-y-6">
+          <div>
+            <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome do Produto</label>
+            <input id="nome" type="text" placeholder="Ex: Colar de Macramê Sol" class="w-full border-gray-300 px-4 py-2.5 rounded-lg shadow-sm transition-shadow duration-200 focus:ring-2 focus:ring-pink-300 focus:border-pink-500">
+          </div>
 
-      <button id="btnCadastrar" class="bg-pink-500 text-white px-6 py-2 rounded-xl hover:bg-pink-600">Cadastrar</button>
-    </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="preco" class="block text-sm font-medium text-gray-700 mb-1">Preço (R$)</label>
+              <input id="preco" type="number" placeholder="29.90" step="0.01" class="w-full border-gray-300 px-4 py-2.5 rounded-lg shadow-sm transition-shadow duration-200 focus:ring-2 focus:ring-pink-300 focus:border-pink-500">
+            </div>
+            <div>
+              <label for="quantidade" class="block text-sm font-medium text-gray-700 mb-1">Quantidade em Estoque</label>
+              <input id="quantidade" type="number" placeholder="10" class="w-full border-gray-300 px-4 py-2.5 rounded-lg shadow-sm transition-shadow duration-200 focus:ring-2 focus:ring-pink-300 focus:border-pink-500">
+            </div>
+          </div>
+          
+          <div>
+            <label for="imagem" class="block text-sm font-medium text-gray-700 mb-1">Imagem do Produto</label>
+            <div class="mt-1 flex flex-col items-center justify-center w-full">
+              <label for="imagem" class="relative flex flex-col items-center justify-center w-full h-48 border-2 border-pink-300 border-dashed rounded-lg cursor-pointer bg-pink-50 hover:bg-pink-100 transition-colors">
+                <div id="upload-prompt" class="flex flex-col items-center justify-center pt-5 pb-6 text-center">
+                  <svg class="w-10 h-10 mb-3 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                  <p class="mb-2 text-sm text-pink-600"><span class="font-semibold">Clique para enviar</span> ou arraste e solte</p>
+                  <p class="text-xs text-gray-500">PNG, JPG, GIF (MAX. 800x400px)</p>
+                </div>
+                <input id="imagem" type="file" accept="image/*" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer">
+                <img id="imagePreview" src="#" alt="Pré-visualização" class="absolute inset-0 w-full h-full object-cover rounded-lg hidden"/>
+              </label>
+              <p id="noImageText" class="text-xs text-gray-500 mt-2">Nenhuma imagem selecionada.</p>
+            </div>
+          </div>
 
-    <h2 class="text-lg font-semibold text-gray-700 mt-8 mb-4">Produtos Cadastrados</h2>
-    <div id="lista-produtos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+          <button id="btnCadastrar" type="button" class="w-full bg-pink-600 text-white px-6 py-3 rounded-lg hover:bg-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-300 transition-all duration-300 font-semibold text-base flex items-center justify-center shadow-md hover:shadow-lg">
+            <span id="btnText">Cadastrar Produtos</span>
+            <svg id="btnSpinner" class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="lista-produtos-section">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-semibold text-pink-700">Meus Produtos Cadastrados</h2>
+        </div>
+      <div id="lista-produtos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
+        </div>
+    </section>
   </main>
 
+  <footer class="text-center py-8 mt-12 border-t border-pink-200">
+    <p class="text-sm text-pink-600">
+      Arte com Carinho &copy; <span id="currentYear"></span>
+    </p>
+  </footer>
+
   <script type="module">
-    
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    import { cadastrarProduto, carregarProdutos } from './js/produtos.js'
+    import { cadastrarProduto, carregarEExibirProdutos, exibirMensagemFeedback } from './js/produtos.js';
 
-    const supabase = createClient(
-      'https://zjjvzouaalphxenypomp.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpqanZ6b3VhYWxwaHhlbnlwb21wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1NDU0MzMsImV4cCI6MjA2MTEyMTQzM30.V846ghEfXW7D1DegBovnzW7i8T27gdzmygWXOiS7SxQ'
-    );
+    const supabaseUrl = 'https://zjjvzouaalphxenypomp.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpqanZ6b3VhYWxwaHhlbnlwb21wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1NDU0MzMsImV4cCI6MjA2MTEyMTQzM30.V846ghEfXW7D1DegBovnzW7i8T27gdzmygWXOiS7SxQ';
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Verifica se usuário está logado
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      window.location.href = 'index.html';
+    const btnCadastrar = document.getElementById('btnCadastrar');
+    const btnText = document.getElementById('btnText');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const imagemInput = document.getElementById('imagem');
+    const imagePreview = document.getElementById('imagePreview');
+    const noImageText = document.getElementById('noImageText');
+    const uploadPrompt = document.getElementById('upload-prompt'); // Para esconder o prompt de upload
+
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+
+    async function verificarSessaoEIniciar() {
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        console.error("Erro ao obter sessão:", sessionError);
+        exibirMensagemFeedback("Erro ao verificar sessão. Tente recarregar a página.", "erro", 0);
+        return;
+      }
+      if (!session) {
+        window.location.href = 'index.html'; 
+      } else {
+        await carregarEExibirProdutos(supabase);
+        noImageText.classList.remove('hidden');
+        uploadPrompt.classList.remove('hidden'); // Garante que o prompt está visível
+        imagePreview.classList.add('hidden'); // Garante que o preview está escondido
+      }
     }
 
-    // Event listener para o botão
-    document.getElementById('btnCadastrar').addEventListener('click', () => {
-      cadastrarProduto(supabase);
+    btnCadastrar.addEventListener('click', async () => {
+      btnText.textContent = 'Cadastrando...';
+      btnSpinner.classList.remove('hidden');
+      btnCadastrar.disabled = true;
+      
+      // Adiciona um pequeno delay para o usuário perceber o feedback visual, mesmo que a operação seja rápida
+      await new Promise(resolve => setTimeout(resolve, 300)); 
+
+      try {
+        // A função cadastrarProduto deve retornar true em sucesso, false em validação, ou lançar erro
+        const sucesso = await cadastrarProduto(supabase); 
+        if (sucesso) {
+             // Limpa o formulário (inclusive o preview da imagem) está dentro de cadastrarProduto se for sucesso
+        }
+      } catch (e) {
+        // Erros de rede ou exceções inesperadas já são tratados em cadastrarProduto com exibirMensagemFeedback
+        console.error("Exceção capturada no listener do botão:", e)
+      }
+      finally {
+        btnText.textContent = 'Cadastrar Meus Produtos';
+        btnSpinner.classList.add('hidden');
+        btnCadastrar.disabled = false;
+      }
     });
 
-    // Carrega produtos ao iniciar
-    carregarProdutos(supabase);
+    imagemInput.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        // Opcional: Validar tipo e tamanho do arquivo aqui antes de ler
+        // Ex: if (!file.type.startsWith('image/')){ exibirMensagemFeedback('Por favor, selecione um arquivo de imagem.', 'aviso'); return; }
+        // Ex: if (file.size > 2 * 1024 * 1024) { exibirMensagemFeedback('Imagem muito grande (máx 2MB).', 'aviso'); return; }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imagePreview.src = e.target.result;
+          imagePreview.classList.remove('hidden');
+          noImageText.classList.add('hidden');
+          uploadPrompt.classList.add('hidden'); 
+        }
+        reader.readAsDataURL(file);
+      } else {
+        imagePreview.src = "#";
+        imagePreview.classList.add('hidden');
+        noImageText.classList.remove('hidden');
+        uploadPrompt.classList.remove('hidden'); 
+      }
+    });
+    
+
+    verificarSessaoEIniciar();
   </script>
 </body>
 </html>

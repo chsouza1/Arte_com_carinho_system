@@ -5,6 +5,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Arte Com Carinho • Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #ec4899; 
+      box-shadow: 0 0 0 3px #fbcfe8; 
+      outline: none;
+    }
+  </style>
+</head>
+<body class="bg-pink-100 flex items-center justify-center min-h-screen antialiased px-4">
+  <div class="bg-white p-8 sm:p-10 rounded-xl shadow-2xl w-full max-w-md">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-pink-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          
+        </svg>
+        <h1 class="text-3xl font-bold text-pink-600">Arte Com Carinho</h1>
+      </div>
+      <p class="text-gray-500">Acesse o painel de administração</p>
+    </div>
+    
+    <form id="loginForm" class="space-y-5">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+            </svg>
+          </div>
+          <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm transition-shadow duration-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-300">
+        </div>
+      </div>
+      
+      <div>
+        <label for="senha" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+        <div class="relative">
+           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+            </svg>
+          </div>
+          <input id="senha" name="senha" type="password" placeholder="••••••••" required class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm transition-shadow duration-200 focus:border-pink-500 focus:ring-2 focus:ring-pink-300">
+        </div>
+      </div>
+      
+      <button id="loginButton" type="button" class="w-full bg-pink-600 text-white py-3 rounded-lg hover:bg-pink-700 focus:outline-none focus:ring-4 focus:ring-pink-300 transition-all duration-300 font-semibold text-base flex items-center justify-center shadow-md hover:shadow-lg">
+        <span id="loginButtonText">Entrar</span>
+        <svg id="loginSpinner" class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </button>
+      
+      <p id="mensagem" class="mt-5 text-sm text-red-600 min-h-[1.25em]"></p> </form>
+  </div>
+
+  <script type="module">
+    import { login } from './login.js'; // Certifique-se que o caminho está correto
+
+    const loginButton = document.getElementById('loginButton');
+    const loginButtonText = document.getElementById('loginButtonText');
+    const loginSpinner = document.getElementById('loginSpinner');
+    const mensagemElement = document.getElementById('mensagem');
+    const emailInput = document.getElementById('email');
+    const senhaInput = document.getElementById('senha');
+
+    loginButton.addEventListener('click', async () => {
+      const email = emailInput.value;
+      const senha = senhaInput.value;
+
+      // Limpa mensagem de erro anterior
+      mensagemElement.textContent = '';
+
+      // Validação simples de campos vazios
+      if (!email || !senha) {
+        mensagemElement.textContent = 'Por favor, preencha o email e a senha.';
+        return;
+      }
+
+      // Ativa estado de carregamento
+      loginButtonText.textContent = 'Entrando...';
+      loginSpinner.classList.remove('hidden');
+      loginButton.disabled = true;
+      emailInput.disabled = true;
+      senhaInput.disabled = true;
+
+      try {
+        await login(email, senha); // Sua função de login do Supabase
+        window.location.href = 'dashboard.html'; // Redireciona em caso de sucesso
+      } catch (error) {
+        console.error("Erro no login:", error); // Para depuração
+        // Idealmente, sua função login(email, senha) do Supabase deve lançar um erro específico
+        // que você pode tratar aqui para mensagens mais detalhadas.
+        mensagemElement.textContent = 'Falha no login. Verifique seu email e senha.';
+      } finally {
+        // Restaura estado do botão e campos
+        loginButtonText.textContent = 'Entrar';
+        loginSpinner.classList.add('hidden');
+        loginButton.disabled = false;
+        emailInput.disabled = false;
+        senhaInput.disabled = false;
+      }
+    });
+
+    // Opcional: permitir login com a tecla Enter nos campos de senha
+    senhaInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Evita o comportamento padrão de submit do formulário (se houver)
+            loginButton.click(); // Simula o clique no botão de login
+        }
+    });
+  </script>
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arte Com Carinho • Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-pink-50 flex items-center justify-center h-screen">
   <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-sm text-center">
@@ -36,4 +159,4 @@
     });
   </script>
 </body>
-</html>
+</html> -->

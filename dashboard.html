@@ -5,50 +5,282 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Painel • Arte Com Carinho</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/heroicons@latest/css/heroicons.min.css" rel="stylesheet">
+  <style>
+    /* Estilo para um scroll suave, se a lista de atividades/alertas crescer */
+    .custom-scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #ec4899; /* Cor rosa do tema */
+      border-radius: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background-color: #f9a8d4; /* Rosa mais claro */
+    }
+  </style>
 </head>
-<body class="bg-pink-50 min-h-screen">
-  <header class="bg-white shadow-md p-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold text-pink-600">Arte Com Carinho</h1>
-    <button onclick="logout()" class="text-sm text-white bg-pink-500 px-4 py-1 rounded-lg hover:bg-pink-600">Sair</button>
+<body class="bg-pink-100 min-h-screen antialiased">
+  <header class="bg-pink-600 shadow-lg p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-white">
+      <i class="fas fa-palette mr-2"></i>Arte Com Carinho
+    </h1>
+    <button onclick="logout()" class="flex items-center text-sm text-pink-600 bg-white px-4 py-2 rounded-lg hover:bg-pink-50 transition-colors shadow hover:shadow-md">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+      </svg>
+      Sair
+    </button>
   </header>
 
-  <main class="p-6">
-    <h2 class="text-lg font-semibold text-gray-700 mb-4">Painel de Administração</h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <a href="produtos.html" class="block bg-white border rounded-xl p-6 shadow hover:shadow-lg transition">
-        <h3 class="text-pink-600 text-xl font-semibold">🧺 Estoque</h3>
-        <p class="text-sm text-gray-600 mt-2">Cadastrar e gerenciar produtos</p>
-      </a>
-      
-      <a href="vendas.html" class="block bg-white border rounded-xl p-6 shadow hover:shadow-lg transition">
-        <h3 class="text-pink-600 text-xl font-semibold">💰 Vendas</h3>
-        <p class="text-sm text-gray-600 mt-2">Registrar e acompanhar vendas</p>
-      </a>
+  <main class="p-6 space-y-8">
+    <div>
+      <h2 class="text-2xl font-semibold text-pink-700 mb-1">Olá, [Nome do Usuário]!</h2>
+      <p class="text-md text-gray-600">Bem-vindo(a) de volta ao seu painel.</p>
     </div>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow-lg border border-pink-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-500 uppercase">Total de Produtos</p>
+            <p id="total-produtos" class="text-3xl font-bold text-pink-600">0</p>
+          </div>
+          <div class="bg-pink-100 p-3 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-pink-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10.5 11.25h3M12 17.25v-6.75" />
+            </svg>
+          </div>
+        </div>
+        <p class="text-xs text-gray-400 mt-2">Produtos cadastrados no sistema.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-lg border border-orange-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-500 uppercase">Itens com Baixo Estoque</p>
+            <p id="baixo-estoque" class="text-3xl font-bold text-orange-500">0</p>
+          </div>
+           <div class="bg-orange-100 p-3 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-orange-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+            </svg>
+          </div>
+        </div>
+        <p class="text-xs text-gray-400 mt-2">Produtos precisando de reposição (ex: < 5 unidades).</p>
+      </div>
+      
+      <div class="bg-white p-6 rounded-xl shadow-lg border border-teal-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-500 uppercase">Valor Estimado do Estoque</p>
+            <p id="valor-estoque" class="text-3xl font-bold text-teal-600">R$ 0,00</p>
+          </div>
+          <div class="bg-teal-100 p-3 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-teal-500">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.75A.75.75 0 0 1 2.25 4.5h.75A.75.75 0 0 1 3.75 5.25v.75Zm0 0h.008v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 2.25.008.007H3.375V7.5h.375Zm0 2.25a.75.75 0 0 0-.75.75v.75c0 .414.336.75.75.75h.75a.75.75 0 0 0 .75-.75v-.75a.75.75 0 0 0-.75-.75h-.75Zm0 2.25h.008v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 2.25.008.007H3.375v-.75h.375Zm0 0c.199 0 .375-.024.528-.055a21.297 21.297 0 0 0 1.621-.302c.397-.099.71-.342.71-.737V4.5a.75.75 0 0 0-.75-.75H3.75a.75.75 0 0 0-.75.75v11.25c0 .414.336.75.75.75h.75Zm12.75-2.25h.008v.008H16.5V15Z" />
+            </svg>
+          </div>
+        </div>
+        <p class="text-xs text-gray-400 mt-2">Soma do (preço x quantidade) de todos os itens.</p>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-pink-200 transition-shadow border border-pink-200">
+        <h3 class="text-xl font-semibold text-pink-700 mb-3">Gerenciar Loja</h3>
+        <div class="space-y-3">
+          <a href="produtos.html" class="flex items-center space-x-3 p-4 bg-pink-50 hover:bg-pink-100 rounded-lg transition-colors text-pink-700 hover:text-pink-800">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10.5 11.25h3M12 17.25v-6.75" />
+            </svg>
+            <div>
+              <span class="font-medium">Estoque de Produtos</span>
+              <p class="text-xs text-gray-500">Cadastrar, visualizar e gerenciar produtos</p>
+            </div>
+          </a>
+          <a href="vendas.html" class="flex items-center space-x-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors text-green-700 hover:text-green-800">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.75A.75.75 0 0 1 2.25 4.5h.75A.75.75 0 0 1 3.75 5.25v.75Zm0 0h.008v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 2.25.008.007H3.375V7.5h.375Zm0 2.25a.75.75 0 0 0-.75.75v.75c0 .414.336.75.75.75h.75a.75.75 0 0 0 .75-.75v-.75a.75.75 0 0 0-.75-.75h-.75Zm0 2.25h.008v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 2.25.008.007H3.375v-.75h.375Zm0 0c.199 0 .375-.024.528-.055a21.297 21.297 0 0 0 1.621-.302c.397-.099.71-.342.71-.737V4.5a.75.75 0 0 0-.75-.75H3.75a.75.75 0 0 0-.75.75v11.25c0 .414.336.75.75.75h.75Zm12.75-2.25h.008v.008H16.5V15Z" />
+            </svg>
+            <div>
+              <span class="font-medium">Registro de Vendas</span>
+              <p class="text-xs text-gray-500">Lançar novas vendas e ver histórico</p>
+            </div>
+          </a>
+          </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-pink-200 transition-shadow border border-pink-200">
+        <h3 class="text-xl font-semibold text-pink-700 mb-3">Alertas e Atividades</h3>
+        <div id="lista-atividades" class="space-y-3 max-h-60 overflow-y-auto custom-scroll pr-2">
+          <div class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg">
+            <div class="bg-red-100 p-2 rounded-full mt-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-red-500">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-red-700">Produto "Toalha Rosa Bebê" com apenas 2 unidades!</p>
+              <p class="text-xs text-gray-500">Considere repor o estoque em breve.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
+            <div class="bg-green-100 p-2 rounded-full mt-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-600">
+                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-green-700">Novo produto "Kit Agulhas Mágicas" cadastrado.</p>
+              <p class="text-xs text-gray-500">Há 15 minutos</p>
+            </div>
+          </div>
+          <p id="sem-atividades" class="text-sm text-gray-400 text-center hidden">Nenhuma atividade recente.</p>
+        </div>
+      </div>
+    </section>
+
   </main>
+  <footer class="text-center py-6 mt-12 border-t border-pink-200">
+    <p class="text-sm text-pink-700">
+      Sistema desenvolvido por <a href="https://github.com/chsouza1" class="text-pink-600 hover:underline">Carlos Henrique</a> • Arte Com Carinho
+    </p>
+  </footer>
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
     const supabaseUrl = 'https://zjjvzouaalphxenypomp.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpqanZ6b3VhYWxwaHhlbnlwb21wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1NDU0MzMsImV4cCI6MjA2MTEyMTQzM30.V846ghEfXW7D1DegBovnzW7i8T27gdzmygWXOiS7SxQ'; // Substitua pela sua chave pública (anon key)
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpqanZ6b3VhYWxwaHhlbnlwb21wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1NDU0MzMsImV4cCI6MjA2MTEyMTQzM30.V846ghEfXW7D1DegBovnzW7i8T27gdzmygWXOiS7SxQ';
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Verifica se o usuário está logado
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      window.location.href = 'index.html'; // redireciona se não estiver logado
+    let currentUser = null;
+
+    // Função para buscar dados do painel
+    async function carregarDadosPainel() {
+      if (!currentUser) return;
+
+      // Atualiza o nome do usuário (Exemplo, idealmente viria do perfil)
+      const userNameEl = document.querySelector('main div h2');
+      if (userNameEl && currentUser.email) {
+        userNameEl.textContent = `Olá, ${currentUser.email.split('@')[0]}!`;
+      }
+      
+      // 1. Total de Produtos
+      const { data: produtos, error: produtosError, count: totalProdutos } = await supabase
+        .from('produtos') // Certifique-se que sua tabela é 'produtos'
+        .select('*', { count: 'exact', head: true }); // head:true para só pegar o count
+
+      if (totalProdutos !== null) {
+        document.getElementById('total-produtos').textContent = totalProdutos;
+      } else if (produtosError) {
+        console.error("Erro ao buscar total de produtos:", produtosError.message);
+      }
+
+      // 2. Itens com Baixo Estoque (Exemplo: quantidade < 5)
+      const LIMITE_BAIXO_ESTOQUE = 5;
+      const { data: baixoEstoqueItens, error: baixoEstoqueError, count: totalBaixoEstoque } = await supabase
+        .from('produtos')
+        .select('nome, quantidade', { count: 'exact' }) // Adicione 'nome' e 'quantidade'
+        .lt('quantidade', LIMITE_BAIXO_ESTOQUE); // 'lt' = less than (menor que)
+
+      const listaAtividadesEl = document.getElementById('lista-atividades');
+      const semAtividadesEl = document.getElementById('sem-atividades');
+      let temAtividades = false;
+
+      if (totalBaixoEstoque !== null) {
+        document.getElementById('baixo-estoque').textContent = totalBaixoEstoque;
+        // Adicionar alertas de baixo estoque na lista de atividades
+        if (baixoEstoqueItens && baixoEstoqueItens.length > 0) {
+            temAtividades = true;
+            baixoEstoqueItens.forEach(item => {
+                const alertaDiv = document.createElement('div');
+                alertaDiv.className = 'flex items-start space-x-3 p-3 bg-red-50 rounded-lg';
+                alertaDiv.innerHTML = `
+                    <div class="bg-red-100 p-2 rounded-full mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-red-500">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-red-700">Baixo estoque: "${item.nome}" com apenas ${item.quantidade} unidade(s)!</p>
+                        <p class="text-xs text-gray-500">Considere repor o estoque.</p>
+                    </div>
+                `;
+                listaAtividadesEl.appendChild(alertaDiv);
+            });
+        }
+
+      } else if (baixoEstoqueError) {
+          console.error("Erro ao buscar itens com baixo estoque:", baixoEstoqueError.message);
+      }
+
+
+      // 3. Valor Estimado do Estoque
+      const { data: todosProdutos, error: todosProdutosError } = await supabase
+        .from('produtos')
+        .select('preco, quantidade');
+
+      if (todosProdutos) {
+        const valorTotal = todosProdutos.reduce((acc, produto) => {
+          return acc + (parseFloat(produto.preco) * parseInt(produto.quantidade));
+        }, 0);
+        document.getElementById('valor-estoque').textContent = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      } else if (todosProdutosError) {
+         console.error("Erro ao buscar produtos para calcular valor:", todosProdutosError.message);
+      }
+
+      // Gerenciar visibilidade da mensagem "Sem atividades"
+      if (temAtividades) {
+        semAtividadesEl.classList.add('hidden');
+      } else {
+        // Se não houver nenhuma outra atividade para mostrar, exiba a mensagem.
+        // Você pode adicionar mais lógicas para outros tipos de atividades aqui.
+        // Por enquanto, se não há itens de baixo estoque, consideramos sem atividades.
+        // Adicione uma verificação para ver se há *algum* filho em listaAtividadesEl.
+        if (listaAtividadesEl.children.length === 0) {
+            semAtividadesEl.classList.remove('hidden');
+        } else {
+            semAtividadesEl.classList.add('hidden');
+        }
+      }
+    }
+
+    // Verifica se o usuário está logado e carrega dados
+    async function initDashboard() {
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        console.error("Erro ao obter sessão:", sessionError.message);
+        window.location.href = 'index.html'; // Melhor redirecionar em caso de erro grave
+        return;
+      }
+      if (!session) {
+        window.location.href = 'index.html';
+      } else {
+        currentUser = session.user;
+        await carregarDadosPainel();
+      }
     }
 
     // Logout
     async function logout() {
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Erro ao fazer logout:", error.message);
+      }
       window.location.href = 'index.html';
     }
 
-    window.logout = logout;
+    window.logout = logout; // Torna a função logout acessível globalmente para o onclick
+    
+    initDashboard(); // Inicia o painel
   </script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
+
 </html>
+<!--
+  Este é um exemplo de painel de administração para o sistema "Arte Com Carinho".
+  O painel inclui informações sobre produtos, estoque e atividades recentes.
+  As informações são carregadas dinamicamente usando a biblioteca Supabase.
