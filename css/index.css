@@ -1,0 +1,6 @@
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #ec4899; 
+  box-shadow: 0 0 0 3px #fbcfe8; 
+  outline: none;
+}

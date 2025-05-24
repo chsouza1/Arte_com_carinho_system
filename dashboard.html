@@ -6,19 +6,7 @@
   <title>Painel • Arte Com Carinho</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/heroicons@latest/css/heroicons.min.css" rel="stylesheet">
-  <style>
-    /* Estilo para um scroll suave, se a lista de atividades/alertas crescer */
-    .custom-scroll::-webkit-scrollbar {
-      width: 8px;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background-color: #ec4899; /* Cor rosa do tema */
-      border-radius: 4px;
-    }
-    .custom-scroll::-webkit-scrollbar-track {
-      background-color: #f9a8d4; /* Rosa mais claro */
-    }
-  </style>
+  <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body class="bg-pink-100 min-h-screen antialiased">
   <header class="bg-pink-600 shadow-lg p-4 flex justify-between items-center">
@@ -88,7 +76,7 @@
 
     <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-pink-200 transition-shadow border border-pink-200">
-        <h3 class="text-xl font-semibold text-pink-700 mb-3">Gerenciar Loja</h3>
+        <h3 class="text-xl font-semibold text-pink-700 mb-3">Gerenciar Empresa</h3>
         <div class="space-y-3">
           <a href="produtos.html" class="flex items-center space-x-3 p-4 bg-pink-50 hover:bg-pink-100 rounded-lg transition-colors text-pink-700 hover:text-pink-800">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
@@ -108,33 +96,31 @@
               <p class="text-xs text-gray-500">Lançar novas vendas e ver histórico</p>
             </div>
           </a>
+          <a href="pedidos.html" class="flex items-center space-x-3 p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors text-green-700 hover:text-green-800">
+            <div style="width: 30px; height: auto;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 394.688">
+                <path fill="#FB5541" fill-rule="nonzero" d="M133.644 228.234L91.993 77.405a14.395 14.395 0 01-.878-4.967c0-7.964 6.458-14.422 14.422-14.422h204.83c-11.002 18.116-17.336 39.38-17.336 62.121 0 30.672 11.704 61.347 35.11 84.753 19.126 19.126 43.112 30.437 67.98 33.935h-248.62v-.043c-6.307.003-12.096-4.175-13.857-10.548z"/>
+                <path fill="#333" d="M352.424 324.199c19.464 0 35.244 15.779 35.244 35.245 0 19.464-15.78 35.244-35.244 35.244-19.466 0-35.245-15.78-35.245-35.244 0-19.466 15.779-35.245 35.245-35.245zm-154.518 0c19.464 0 35.244 15.779 35.244 35.245 0 19.464-15.78 35.244-35.244 35.244-19.466 0-35.245-15.78-35.245-35.244 0-19.466 15.779-35.245 35.245-35.245z"/>
+                <path fill="#B73E30" fill-rule="nonzero" d="M189.2 122.517c-.372-5.575 3.846-10.397 9.422-10.769 5.575-.371 10.397 3.847 10.768 9.423l3.625 53.87c.372 5.576-3.846 10.397-9.422 10.769-5.575.371-10.397-3.847-10.769-9.422l-3.624-53.871zm66.294-.673c0-5.598 4.539-10.137 10.137-10.137 5.597 0 10.136 4.539 10.136 10.137v53.87c0 5.598-4.539 10.137-10.136 10.137-5.598 0-10.137-4.539-10.137-10.137v-53.87z"/>
+                <path fill="#484848" fill-rule="nonzero" d="M14.419 28.838C6.457 28.838 0 22.381 0 14.419 0 6.457 6.457 0 14.419 0h37.525l1.44.072C66.493.311 78.423 2.88 88.457 9.125c10.982 6.833 19.18 17.493 23.507 33.407 14.579 62.52 34.659 125.138 49.666 187.674 6.259 24.738 11.416 37.474 19.525 42.922 7.077 4.754 18.794 5.766 37.235 5.701 7.5-.023 14.812-.177 22.309-.177h154.328c7.962 0 14.419 6.457 14.419 14.419 0 7.962-6.457 14.419-14.419 14.419H240.022c-7.128 0-14.122.051-21.246.065-24.323.065-40.425-1.683-53.62-10.547-15.288-10.268-23.342-27.714-31.448-59.821l-49.57-187.11c-2.241-8.246-6.016-13.475-10.887-16.505-5.222-3.249-12.178-4.617-20.226-4.775l-1.081.041H14.419z"/>
+                <path fill="#333" fill-rule="nonzero" d="M0 14.419C0 6.457 6.457 0 14.419 0h37.525l1.44.072C66.493.311 78.423 2.88 88.457 9.125c10.982 6.833 19.18 17.493 23.507 33.407 14.579 62.52 34.659 125.138 49.666 187.674 6.259 24.738 11.416 37.474 19.525 42.922 7.087 4.761 18.828 5.77 37.317 5.701 7.463-.023 14.74-.177 22.2-.177h154.355c7.962 0 14.419 6.457 14.419 14.419H229.231c-55.159.971-67.194-2.524-81.555-59.376L98.05 46.305c-6.57-24.167-23.913-31.756-46.106-31.886H0z"/>
+                <path fill="#333" d="M342.817 50.059c38.702-38.703 101.452-38.703 140.155 0 38.704 38.703 38.704 101.453 0 140.156-38.703 38.703-101.453 38.703-140.155 0-38.704-38.703-38.704-101.453 0-140.156z"/>
+                <path fill="#fff" d="M366.922 104.016h29.851V74.164a4.644 4.644 0 014.634-4.633h22.975c2.55 0 4.634 2.124 4.634 4.633v29.852h29.85c2.547 0 4.633 2.108 4.633 4.633v22.975c0 2.525-2.107 4.634-4.633 4.634h-29.85v29.85c0 2.53-2.104 4.633-4.634 4.633h-22.975c-2.53 0-4.634-2.083-4.634-4.633v-29.85h-29.851c-2.529 0-4.634-2.083-4.634-4.634v-22.975c0-2.549 2.088-4.633 4.634-4.633z"/>
+              </svg>
+            </div>
+            <div>
+              <span class="font-medium">Registro de novos pedidos</span>
+              <p class="text-xs text-gray-500">Lançar novos pedidos dos clientes</p>
+            </div>
+          </a>
+
           </div>
       </div>
-
       <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-pink-200 transition-shadow border border-pink-200">
         <h3 class="text-xl font-semibold text-pink-700 mb-3">Alertas e Atividades</h3>
         <div id="lista-atividades" class="space-y-3 max-h-60 overflow-y-auto custom-scroll pr-2">
-          <div class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg">
-            <div class="bg-red-100 p-2 rounded-full mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-red-500">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-red-700">Produto "Toalha Rosa Bebê" com apenas 2 unidades!</p>
-              <p class="text-xs text-gray-500">Considere repor o estoque em breve.</p>
-            </div>
+        </div>
           </div>
-          <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
-            <div class="bg-green-100 p-2 rounded-full mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-600">
-                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-green-700">Novo produto "Kit Agulhas Mágicas" cadastrado.</p>
-              <p class="text-xs text-gray-500">Há 15 minutos</p>
-            </div>
           </div>
           <p id="sem-atividades" class="text-sm text-gray-400 text-center hidden">Nenhuma atividade recente.</p>
         </div>
@@ -178,7 +164,7 @@
         console.error("Erro ao buscar total de produtos:", produtosError.message);
       }
 
-      // 2. Itens com Baixo Estoque (Exemplo: quantidade < 5)
+  
       const LIMITE_BAIXO_ESTOQUE = 5;
       const { data: baixoEstoqueItens, error: baixoEstoqueError, count: totalBaixoEstoque } = await supabase
         .from('produtos')
@@ -231,14 +217,10 @@
          console.error("Erro ao buscar produtos para calcular valor:", todosProdutosError.message);
       }
 
-      // Gerenciar visibilidade da mensagem "Sem atividades"
       if (temAtividades) {
         semAtividadesEl.classList.add('hidden');
       } else {
-        // Se não houver nenhuma outra atividade para mostrar, exiba a mensagem.
-        // Você pode adicionar mais lógicas para outros tipos de atividades aqui.
-        // Por enquanto, se não há itens de baixo estoque, consideramos sem atividades.
-        // Adicione uma verificação para ver se há *algum* filho em listaAtividadesEl.
+
         if (listaAtividadesEl.children.length === 0) {
             semAtividadesEl.classList.remove('hidden');
         } else {
@@ -280,7 +262,3 @@
 </body>
 
 </html>
-<!--
-  Este é um exemplo de painel de administração para o sistema "Arte Com Carinho".
-  O painel inclui informações sobre produtos, estoque e atividades recentes.
-  As informações são carregadas dinamicamente usando a biblioteca Supabase.

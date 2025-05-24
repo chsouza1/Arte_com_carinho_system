@@ -1,0 +1,15 @@
+.custom-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  .custom-scroll::-webkit-scrollbar-thumb {
+    background-color: #ec4899; 
+    border-radius: 4px;
+  }
+  .custom-scroll::-webkit-scrollbar-track {
+    background-color: #f9a8d4; 
+  }
+
+  .tamanho_caixa {
+    width: 30px;
+    height: auto;
+  }
