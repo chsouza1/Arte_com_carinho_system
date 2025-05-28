@@ -13,3 +13,19 @@
     width: 30px;
     height: auto;
   }
+
+    .custom-scroll::-webkit-scrollbar { width: 8px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background-color: #ec4899; border-radius: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background-color: #f9a8d4; }
+    
+    /* Para garantir que os gráficos sejam responsivos dentro de seus containers */
+    .chart-container {
+      position: relative;
+      /*height:40vh;  Você pode definir uma altura */
+      /*width:80vw;   ou largura, ou deixar o Tailwind controlar */
+      padding: 1rem; /* Adiciona um pouco de espaço interno */
+      background-color: white;
+      border-radius: 0.75rem; /* rounded-xl */
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+      border: 1px solid #fbcfe8; /* border-pink-200 */
+    }

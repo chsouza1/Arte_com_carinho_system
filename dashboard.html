@@ -7,30 +7,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/heroicons@latest/css/heroicons.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-
-  <style>
-    .custom-scroll::-webkit-scrollbar { width: 8px; }
-    .custom-scroll::-webkit-scrollbar-thumb { background-color: #ec4899; border-radius: 4px; }
-    .custom-scroll::-webkit-scrollbar-track { background-color: #f9a8d4; }
-    
-    /* Para garantir que os gráficos sejam responsivos dentro de seus containers */
-    .chart-container {
-      position: relative;
-      /*height:40vh;  Você pode definir uma altura */
-      /*width:80vw;   ou largura, ou deixar o Tailwind controlar */
-      padding: 1rem; /* Adiciona um pouco de espaço interno */
-      background-color: white;
-      border-radius: 0.75rem; /* rounded-xl */
-      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
-      border: 1px solid #fbcfe8; /* border-pink-200 */
-    }
-  </style>
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/admin.css">
 </head>
 <body class="bg-pink-100 min-h-screen antialiased">
   <header class="bg-pink-600 shadow-lg p-4 flex justify-between items-center">
     <h1 class="text-2xl font-bold text-white">
       <i class="fas fa-palette mr-2"></i>Arte Com Carinho
     </h1>
+     <a href="admin.html" target="_blank" class="flex items-center text-sm text-pink-600 bg-white px-4 py-2 rounded-lg hover:text-black-700 font-medium transition-colors shadow hover:shadow-md">Painel Administração Site</a>
     <button onclick="logout()" class="flex items-center text-sm text-pink-600 bg-white px-4 py-2 rounded-lg hover:bg-pink-50 transition-colors shadow hover:shadow-md">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
@@ -146,7 +131,7 @@
   </main>
   <footer class="text-center py-6 mt-12 border-t border-pink-200">
     <p class="text-sm text-pink-700">
-      Sistema desenvolvido por <a href="https://github.com/chsouza1" class="text-pink-600 hover:underline">Carlos Henrique</a> • Arte Com Carinho
+      Sistema desenvolvido por <a href="https://github.com/chsouza1" target="_blank" class="text-pink-600 hover:underline">Carlos Henrique</a> • Arte Com Carinho
     </p>
   </footer>
 
@@ -158,19 +143,18 @@
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     let currentUser = null;
-    let graficoVendasSemanaInstance = null; // Para guardar a instância do gráfico de vendas
-    let graficoStatusPedidosInstance = null; // Para guardar a instância do gráfico de status
+    let graficoVendasSemanaInstance = null; 
+    let graficoStatusPedidosInstance = null; 
 
-    // Função para formatar data para o gráfico (DD/MM)
+    
     function formatarDataGrafico(dataISO) {
-        const data = new Date(dataISO + 'T00:00:00'); // Considera data local
+        const data = new Date(dataISO + 'T00:00:00'); 
         const dia = String(data.getDate()).padStart(2, '0');
         const mes = String(data.getMonth() + 1).padStart(2, '0');
         return `${dia}/${mes}`;
     }
 
-    // Função para renderizar gráfico de vendas da semana
-async function renderizarGraficoVendasSemana() { // Pode até remover o async temporariamente
+async function renderizarGraficoVendasSemana() { 
     console.log("Tentando renderizar gráfico de vendas ESTÁTICO...");
     const canvasElement = document.getElementById('graficoVendasSemana');
     if (!canvasElement) {
@@ -183,14 +167,14 @@ async function renderizarGraficoVendasSemana() { // Pode até remover o async te
         labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'],
         datasets: [{
             label: 'Vendas Teste',
-            data: [12, 19, 3, 5, 2, 3, 7], // Dados fixos
-            backgroundColor: 'rgba(236, 72, 153, 0.5)', // Rosa com opacidade
-            borderColor: 'rgba(236, 72, 153, 1)', // Rosa sólido
+            data: [1, 19, 3, 5, 2, 3, 7], 
+            backgroundColor: 'rgba(236, 72, 153, 0.5)', 
+            borderColor: 'rgba(236, 72, 153, 1)', 
             borderWidth: 1
         }]
     };
 
-    if (graficoVendasSemanaInstance) { // Usando a variável de instância que já deve existir
+    if (graficoVendasSemanaInstance) { 
         graficoVendasSemanaInstance.destroy();
     }
     graficoVendasSemanaInstance = new Chart(ctx, {
@@ -198,14 +182,14 @@ async function renderizarGraficoVendasSemana() { // Pode até remover o async te
         data: dadosEstaticos,
         options: {
             responsive: true,
-            maintainAspectRatio: false, // MUITO IMPORTANTE
+            maintainAspectRatio: false, 
             scales: {
                 y: {
                     beginAtZero: true
                 }
             },
             plugins: {
-                 legend: { display: true } // Só para ter algo
+                 legend: { display: true } 
             }
         }
     });
@@ -233,7 +217,7 @@ async function renderizarGraficoVendasSemana() { // Pode até remover o async te
         const labelsStatus = Object.keys(contagemStatus);
         const dataStatus = Object.values(contagemStatus);
         
-        // Cores temáticas e mais variadas para gráfico de pizza/rosca
+      
         const backgroundColors = [
             'rgba(236, 72, 153, 0.7)',  // Pink
             'rgba(219, 39, 119, 0.7)',  // Pink mais forte
@@ -254,7 +238,7 @@ async function renderizarGraficoVendasSemana() { // Pode até remover o async te
             graficoStatusPedidosInstance.destroy();
         }
         graficoStatusPedidosInstance = new Chart(ctx, {
-            type: 'doughnut', // ou 'pie'
+            type: 'doughnut', // ou 'pie' tanto faz
             data: {
                 labels: labelsStatus,
                 datasets: [{

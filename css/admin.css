@@ -1,0 +1,13 @@
+    input:focus, select:focus, textarea:focus {
+      border-color: #ec4899; /* pink-500 */
+      box-shadow: 0 0 0 2px #fbcfe8; /* pink-200 com opacidade */
+      outline: none;
+    }
+    .image-preview-container {
+      width: 150px; height: 150px; border: 2px dashed #cbd5e1;
+      display: flex; align-items: center; justify-content: center;
+      background-color: #f8fafc; color: #94a3b8;
+      cursor: pointer; position: relative; overflow: hidden;
+    }
+    .image-preview-container img { max-width: 100%; max-height: 100%; object-fit: cover; }
+    .image-preview-container .upload-prompt { text-align: center; font-size: 0.875rem; }

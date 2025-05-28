@@ -1,0 +1,36 @@
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .font-display {
+      font-family: 'Playfair Display', serif;
+    }
+    input[type="search"]:focus,
+    select:focus {
+      border-color: #db2777; /* pink-600 */
+      box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.2); /* pink-600 com opacidade */
+      outline: none;
+    }
+    .product-card {
+      transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+      border: 1px solid #fce7f3; /* pink-100 */
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(219, 39, 119, 0.1), 0 6px 6px rgba(219, 39, 119, 0.07); /* Sombra rosa sutil */
+    }
+    .tag-item {
+      background-color: #fce7f3; /* pink-100 */
+      color: #be185d; /* pink-700 */
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px; /* rounded-full */
+      font-size: 0.75rem; /* text-xs */
+      font-weight: 500; /* medium */
+    }
+    .btn-interesse {
+        background-color: #db2777; /* pink-600 */
+        color: white;
+        transition: background-color 0.3s;
+    }
+    .btn-interesse:hover {
+        background-color: #be185d; /* pink-700 */
+    }
